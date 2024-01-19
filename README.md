@@ -4,6 +4,6 @@ This demo aims to provide a quick introduction to the [GodotInSim](https://githu
 The demo can connect to InSim (remember to have LFS listen to the appropriate port), and send random lights and switches packets, as demonstrated below.
 
 
-![InSim](/examples/GIS_demo.gif)
+![InSim](/examples/GodotInSim_demo.gif)
 
-![OutGauge and OutSim](/examples/GIS_demo.png)
+![OutGauge and OutSim](/examples/GodotInSim_demo.png)
