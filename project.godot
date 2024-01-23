@@ -15,12 +15,6 @@ run/main_scene="res://demo.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[autoload]
-
-GISInSim="*res://addons/godot_insim/src/insim/insim.gd"
-GISOutSim="*res://addons/godot_insim/src/outsim/outsim.gd"
-GISOutGauge="*res://addons/godot_insim/src/outgauge/outgauge.gd"
-
 [debug]
 
 gdscript/warnings/exclude_addons=false
