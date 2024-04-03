@@ -54,14 +54,12 @@ func initialize_timers() -> void:
 
 
 func _on_insim_button_pressed() -> void:
-	if insim.socket.is_socket_connected():
+	if insim.insim_connected:
 		insim.close()
 		insim_button.text = "Initialize InSim"
 	else:
-		insim.address = insim_address
-		insim.insim_port = insim_port
 		var initialization_data := InSimInitializationData.new()
-		insim.initialize(initialization_data)
+		insim.initialize(insim_address, insim_port, initialization_data)
 		insim_button.text = "Close InSim"
 
 
@@ -69,10 +67,10 @@ func _on_car_lights_button_pressed() -> void:
 	if car_lights_timer.is_stopped():
 		car_lights_timer.start(0.1)
 		car_lights_button.text = "Stop Car Lights"
-		insim.send_local_car_lights(CarLights.new())
+		send_local_car_lights(CarLights.new())
 	else:
 		car_lights_timer.stop()
-		insim.send_local_car_lights(CarLights.new(CarLights.ALL_OFF))
+		send_local_car_lights(CarLights.new(CarLights.ALL_OFF))
 		car_lights_button.text = "Send Random Car Lights"
 
 
@@ -82,8 +80,16 @@ func _on_car_switches_button_pressed() -> void:
 		car_switches_button.text = "Stop Car Switches"
 	else:
 		car_switches_timer.stop()
-		insim.send_local_car_switches(CarSwitches.new(CarSwitches.ALL_OFF))
+		send_local_car_switches(CarSwitches.new(CarSwitches.ALL_OFF))
 		car_switches_button.text = "Send Random Car Switches"
+
+
+func send_local_car_lights(lcl: CarLights) -> void:
+	insim.send_packet(InSimSmallPacket.new(0, InSim.Small.SMALL_LCL, lcl.get_value()))
+
+
+func send_local_car_switches(lcs: CarSwitches) -> void:
+	insim.send_packet(InSimSmallPacket.new(0, InSim.Small.SMALL_LCS, lcs.get_value()))
 
 
 func send_random_lights() -> void:
@@ -98,7 +104,7 @@ func send_random_lights() -> void:
 	lcl.fog_rear = randi() % 2
 	lcl.fog_front = randi() % 2
 	lcl.extra = randi() % 2
-	insim.send_local_car_lights(lcl)
+	send_local_car_lights(lcl)
 
 
 func send_random_switches() -> void:
@@ -113,7 +119,7 @@ func send_random_switches() -> void:
 	lcs.headlights = randi() % 2
 	lcs.horn = randi() % 6
 	lcs.siren = randi() % 3
-	insim.send_local_car_switches(lcs)
+	send_local_car_switches(lcs)
 
 
 func update_outgauge(outgauge_packet: OutGaugePacket) -> void:
